@@ -5,6 +5,6 @@
   <key>LSUIElement</key>
   <true/>
   <key>NSAppleEventsUsageDescription</key>
-  <string>Ryshift asks Finder which files you selected when you press the shortcut.</string>
+  <string>Tangerine asks Finder which files you selected when you press the shortcut.</string>
 </dict>
 </plist>

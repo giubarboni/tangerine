@@ -1,6 +1,6 @@
 [package]
-name = "ryshift-engine"
-description = "Every Ryshift action: format conversions and file tools"
+name = "tangerine-engine"
+description = "Every Tangerine action: format conversions and file tools"
 version.workspace = true
 edition.workspace = true
 license.workspace = true

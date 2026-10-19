@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/logo.svg" width="128" alt="Ryshift logo" />
+  <img src="docs/logo.svg" width="128" alt="Tangerine logo" />
 </p>
 
-<h1 align="center">Ryshift</h1>
+<h1 align="center">Tangerine</h1>
 
 <p align="center">Drag a file, press Shift, drop it on a wheel.</p>
 
@@ -27,7 +27,7 @@ Tap Shift again mid-drag to switch between the Convert and Tools wheels. Or sele
 
 ## Install
 
-Download it from the [latest release](https://github.com/alexriderspy/ryshift/releases/latest). Per-system notes and build steps are in [docs/DEVELOPING.md](docs/DEVELOPING.md).
+Download it from the [latest release](https://github.com/giubarboni/tangerine/releases/latest). Per-system notes and build steps are in [docs/DEVELOPING.md](docs/DEVELOPING.md).
 
 ## License
 

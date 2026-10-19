@@ -3037,44 +3037,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf54715a573b99ac80df0bc206da022bcd442c974952c7b9720069370852e21f"
 
 [[package]]
-name = "ryshift-app"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "gtk",
- "objc2",
- "objc2-app-kit",
- "objc2-foundation",
- "ryshift-engine",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-global-shortcut",
- "windows 0.61.3",
- "x11rb",
- "zbus",
-]
-
-[[package]]
-name = "ryshift-cli"
-version = "0.1.0"
-dependencies = [
- "ryshift-engine",
-]
-
-[[package]]
-name = "ryshift-engine"
-version = "0.1.0"
-dependencies = [
- "image",
- "pdfium-render",
- "serde",
- "tempfile",
- "thiserror 2.0.21",
-]
-
-[[package]]
 name = "same-file"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3553,6 +3515,44 @@ dependencies = [
  "pkg-config",
  "toml 0.8.2",
  "version-compare",
+]
+
+[[package]]
+name = "tangerine-app"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "gtk",
+ "objc2",
+ "objc2-app-kit",
+ "objc2-foundation",
+ "serde",
+ "serde_json",
+ "tangerine-engine",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-global-shortcut",
+ "windows 0.61.3",
+ "x11rb",
+ "zbus",
+]
+
+[[package]]
+name = "tangerine-cli"
+version = "0.1.0"
+dependencies = [
+ "tangerine-engine",
+]
+
+[[package]]
+name = "tangerine-engine"
+version = "0.1.0"
+dependencies = [
+ "image",
+ "pdfium-render",
+ "serde",
+ "tempfile",
+ "thiserror 2.0.21",
 ]
 
 [[package]]

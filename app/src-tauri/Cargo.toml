@@ -1,5 +1,5 @@
 [package]
-name = "ryshift-app"
+name = "tangerine-app"
 description = "Drag a file, hold Shift, drop it on a wheel"
 version.workspace = true
 edition.workspace = true
@@ -7,14 +7,14 @@ license.workspace = true
 repository.workspace = true
 
 [[bin]]
-name = "ryshift-app"
+name = "tangerine-app"
 path = "src/main.rs"
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-ryshift-engine = { path = "../../engine" }
+tangerine-engine = { path = "../../engine" }
 tauri = { version = "2", features = ["tray-icon", "macos-private-api"] }
 tauri-plugin-global-shortcut = "2"
 serde = { version = "1", features = ["derive"] }

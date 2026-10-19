@@ -10,7 +10,7 @@
     const params = new URLSearchParams(location.search);
     const ext = params.get("ext") === "jpg" ? "jpg" : "png";
     const name = params.get("name") || `Test Image.${ext}`;
-    window.__RYSHIFT_EDIT__ = { mode: params.get("mode") || "crop", path: `/Users/me/Desktop/${name}` };
+    window.__TANGERINE_EDIT__ = { mode: params.get("mode") || "crop", path: `/Users/me/Desktop/${name}` };
     window.saved = [];
     window.closedByApp = false;
     window.failSave = false;

@@ -1,0 +1,9 @@
+{
+  "uuid": "tangerine@tangerine.app",
+  "name": "Tangerine",
+  "description": "Drag a file, press Shift, drop it on a wheel to convert it. This extension lets the Tangerine app work on Wayland: it spots the drag and places the wheel at your pointer. Needs the Tangerine app running.",
+  "shell-version": ["45", "46", "47", "48", "49"],
+  "url": "https://github.com/giubarboni/tangerine",
+  "settings-schema": "org.gnome.shell.extensions.tangerine",
+  "version-name": "0.1.0"
+}

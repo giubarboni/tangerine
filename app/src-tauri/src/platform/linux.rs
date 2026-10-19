@@ -35,7 +35,7 @@ impl X {
         conn.create_window(0, win, root, 0, 0, 1, 1, 0, WindowClass::INPUT_ONLY, 0, &CreateWindowAux::new())
             .ok()?;
         let mut x = X { conn, root, win, prop: NONE };
-        x.prop = x.atom("RYSHIFT_SELECTION")?;
+        x.prop = x.atom("TANGERINE_SELECTION")?;
         x.conn.flush().ok()?;
         Some(x)
     }
@@ -153,7 +153,7 @@ fn handle(app: &AppHandle, request: dbus::Request) {
 pub fn watch_drags(app: AppHandle) {
     let for_dbus = app.clone();
     if let Err(e) = dbus::serve(move |request| handle(&for_dbus, request)) {
-        eprintln!("Ryshift: D-Bus service unavailable ({e}); the GNOME extension can't reach the app");
+        eprintln!("Tangerine: D-Bus service unavailable ({e}); the GNOME extension can't reach the app");
     }
     if !on_x11() {
         return fallback::watch_drags(app);

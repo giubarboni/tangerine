@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-uuid="ryshift@alexriderspy.github.io"
+uuid="tangerine@tangerine.app"
 src="gnome-extension/$uuid"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT

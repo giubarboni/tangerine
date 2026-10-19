@@ -1,5 +1,5 @@
 const tauri = window.__TAURI__;
-const PARAMS = window.__RYSHIFT_EDIT__ || {};
+const PARAMS = window.__TANGERINE_EDIT__ || {};
 const $ = (id) => document.getElementById(id);
 const view = $("view");
 const ctx = view.getContext("2d");

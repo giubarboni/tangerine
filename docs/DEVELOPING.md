@@ -1,4 +1,4 @@
-# Developing Ryshift
+# Developing Tangerine
 
 ## Platform status
 
@@ -7,41 +7,41 @@
 | macOS 12+ | ✅ from Finder, the desktop, or any app | ✅ Finder selection, ⌥ Space | ✅ |
 | Windows 10/11 | ✅ from File Explorer and the desktop | ✅ Explorer selection, Ctrl + Alt + Space | ✅ |
 | Ubuntu on X11 | ✅ from any app that drags files (Files, desktop, browsers) | ✅ copy files (Ctrl+C), then Ctrl + Alt + Space | ✅ |
-| Ubuntu on Wayland (the default) | ✅ with the Ryshift GNOME extension (GNOME 45+, Ubuntu 23.10+) | ✅ copy files (Ctrl+C), then Ctrl + Alt + Space | ✅ |
+| Ubuntu on Wayland (the default) | ✅ with the Tangerine GNOME extension (GNOME 45+, Ubuntu 23.10+) | ✅ copy files (Ctrl+C), then Ctrl + Alt + Space | ✅ |
 
 Windows and Ubuntu support is new and has been checked by CI builds only. If the wheel misbehaves on your machine, please open an issue.
 
 ### Ubuntu on Wayland
 
-Wayland doesn't let normal apps watch the mouse or place their own windows, so on Wayland Ryshift needs a small GNOME Shell extension. The extension spots "dragging + Shift", tells the app over D-Bus, and moves the wheel to your pointer. The file is still dropped on the app's own window, so the extension never touches files.
+Wayland doesn't let normal apps watch the mouse or place their own windows, so on Wayland Tangerine needs a small GNOME Shell extension. The extension spots "dragging + Shift", tells the app over D-Bus, and moves the wheel to your pointer. The file is still dropped on the app's own window, so the extension never touches files.
 
 ```bash
 scripts/pack-gnome-extension.sh
-gnome-extensions install --force dist/ryshift@alexriderspy.github.io.shell-extension.zip
+gnome-extensions install --force dist/tangerine@tangerine.app.shell-extension.zip
 ```
 
-Log out and back in, then turn on **Ryshift** in the Extensions app. The Ryshift app must be running too. CI also builds the extension zip on every push (the `ryshift-gnome-extension` artifact).
+Log out and back in, then turn on **Tangerine** in the Extensions app. The Tangerine app must be running too. CI also builds the extension zip on every push (the `tangerine-gnome-extension` artifact).
 
 ## Install
 
-Download the file for your system from the [latest release](https://github.com/alexriderspy/ryshift/releases/latest).
+Download the file for your system from the [latest release](https://github.com/giubarboni/tangerine/releases/latest).
 
-**macOS** (Apple Silicon: `Ryshift_…_aarch64.dmg`, Intel: `Ryshift_…_x64.dmg`)
-1. Open the DMG and drag **Ryshift** into **Applications**.
-2. The first time, **right-click Ryshift → Open**, then **Open** again. Builds aren't notarised yet, so a normal double-click is blocked once.
-3. Ryshift appears in the menu bar. The first time you press ⌥ Space, allow it to control Finder.
+**macOS** (Apple Silicon: `Tangerine_…_aarch64.dmg`, Intel: `Tangerine_…_x64.dmg`)
+1. Open the DMG and drag **Tangerine** into **Applications**.
+2. The first time, **right-click Tangerine → Open**, then **Open** again. Builds aren't notarised yet, so a normal double-click is blocked once.
+3. Tangerine appears in the menu bar. The first time you press ⌥ Space, allow it to control Finder.
 
-**Windows 10/11** (`Ryshift_…_x64-setup.exe` or `.msi`)
+**Windows 10/11** (`Tangerine_…_x64-setup.exe` or `.msi`)
 1. Run the installer. If SmartScreen says "Windows protected your PC", click **More info → Run anyway** (builds aren't signed yet).
-2. Ryshift starts in the system tray.
+2. Tangerine starts in the system tray.
 
-**Ubuntu** (`ryshift_…_amd64.deb` or `Ryshift_…_amd64.AppImage`)
+**Ubuntu** (`tangerine_…_amd64.deb` or `Tangerine_…_amd64.AppImage`)
 
 ```bash
-sudo apt install ./ryshift_*_amd64.deb
+sudo apt install ./tangerine_*_amd64.deb
 ```
 
-Or make the AppImage executable (`chmod +x Ryshift_*.AppImage`) and run it. On the default **Wayland** session, also install the GNOME extension from the same release (see [Ubuntu on Wayland](#ubuntu-on-wayland)).
+Or make the AppImage executable (`chmod +x Tangerine_*.AppImage`) and run it. On the default **Wayland** session, also install the GNOME extension from the same release (see [Ubuntu on Wayland](#ubuntu-on-wayland)).
 
 ## Releasing (maintainers)
 
@@ -59,24 +59,24 @@ The **Release** workflow builds every installer (macOS Apple Silicon and Intel, 
 You need [Rust](https://rustup.rs) and Node.js 18+. On Linux, also install the [Tauri system packages](https://v2.tauri.app/start/prerequisites/#linux).
 
 ```bash
-git clone https://github.com/alexriderspy/ryshift
-cd ryshift
+git clone https://github.com/giubarboni/tangerine
+cd tangerine
 scripts/fetch-pdfium.sh     # downloads the PDF engine into lib/
 cd app && npm install
 npm run dev                 # run it
-npm run build               # make Ryshift.app / .dmg (or .exe, .deb, .AppImage)
+npm run build               # make Tangerine.app / .dmg (or .exe, .deb, .AppImage)
 ```
 
-Ryshift lives in the menu bar. There's no main window: use the menu bar icon to quit.
+Tangerine lives in the menu bar. There's no main window: use the menu bar icon to quit.
 
 ## Command line
 
 Every one-click action also works from the terminal, plus a few extras (`tool.half`, `tool.rotate`, `tool.square`, `tool.story`):
 
 ```bash
-cargo run -p ryshift-cli -- list scan.pdf          # which actions fit this file
-cargo run -p ryshift-cli -- run convert.jpg scan.pdf
-cargo run -p ryshift-cli -- run tool.half photo.png
+cargo run -p tangerine-cli -- list scan.pdf          # which actions fit this file
+cargo run -p tangerine-cli -- run convert.jpg scan.pdf
+cargo run -p tangerine-cli -- run tool.half photo.png
 ```
 
 ## How it works
@@ -87,7 +87,7 @@ cargo run -p ryshift-cli -- run tool.half photo.png
   - **macOS** watches the system drag pasteboard.
   - **Windows** watches for a drag that starts in Explorer and reads the dragged files from Explorer's selection.
   - **Linux (X11)** watches the XDND drag selection.
-  - **Linux (Wayland)** relies on the GNOME Shell extension in `gnome-extension/`, which calls the app's D-Bus service (`io.github.alexriderspy.Ryshift`).
+  - **Linux (Wayland)** relies on the GNOME Shell extension in `gnome-extension/`, which calls the app's D-Bus service (`app.tangerine.Tangerine`).
 
   The wheel is a transparent window that accepts the drop as a copy, so the original file never moves.
 
@@ -99,7 +99,7 @@ To work on the UI without building the app, serve the repo (`python3 -m http.ser
 
 ## Contributing
 
-New formats are the easiest way to help. Add a case in `engine/src/lib.rs`, the code in its own module, and a test in `engine/tests/`. Before opening a PR, run `cargo test -p ryshift-engine` and open `docs/dev/ui-tests.html`.
+New formats are the easiest way to help. Add a case in `engine/src/lib.rs`, the code in its own module, and a test in `engine/tests/`. Before opening a PR, run `cargo test -p tangerine-engine` and open `docs/dev/ui-tests.html`.
 
 ## Look
 

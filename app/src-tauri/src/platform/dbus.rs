@@ -1,5 +1,5 @@
-pub const BUS_NAME: &str = "io.github.alexriderspy.Ryshift";
-pub const OBJECT_PATH: &str = "/io/github/alexriderspy/Ryshift";
+pub const BUS_NAME: &str = "app.tangerine.Tangerine";
+pub const OBJECT_PATH: &str = "/app/tangerine/Tangerine";
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Request {
@@ -12,7 +12,7 @@ struct Service {
     on: Box<dyn Fn(Request) + Send + Sync>,
 }
 
-#[zbus::interface(name = "io.github.alexriderspy.Ryshift")]
+#[zbus::interface(name = "app.tangerine.Tangerine")]
 impl Service {
     fn show(&self, x: f64, y: f64, mode: &str) {
         (self.on)(Request::Show { x, y, shortcut: mode == "shortcut" });

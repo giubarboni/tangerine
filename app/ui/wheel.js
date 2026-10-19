@@ -75,7 +75,7 @@ function setHub(top, bottom) {
 }
 
 function restingHub() {
-  if (!state.paths.length && state.mode === "drag") return setHub("Ryshift", "READING FILE");
+  if (!state.paths.length && state.mode === "drag") return setHub("Tangerine", "READING FILE");
   if (!state.paths.length) return setHub("Select", "A FILE");
   if (!state.actions.length) return setHub("No options", "FOR THIS FILE");
   const count = state.paths.length > 1 ? `${state.paths.length} files · ` : "";

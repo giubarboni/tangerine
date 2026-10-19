@@ -1,4 +1,4 @@
-# Ryshift — design
+# Tangerine — design
 
 Drag any file, hold **Shift**, and a wheel of options pops up under your cursor. Drop the file on a slice and the result appears right next to the original. Free and open source, for **macOS, Windows and Linux (Ubuntu)**.
 
@@ -20,7 +20,7 @@ Drag any file, hold **Shift**, and a wheel of options pops up under your cursor.
 3. The wheel opens at the mouse. **Click** a slice, or press its number key (1–8). **Tab** switches wheels and **Esc** cancels.
 
 How it reads "which file is selected":
-- **Mac:** asks Finder through Apple Events (one-time "allow Ryshift to control Finder" prompt).
+- **Mac:** asks Finder through Apple Events (one-time "allow Tangerine to control Finder" prompt).
 - **Windows:** reads the selection of the active Explorer window through the Shell COM API (`IShellWindows`); no prompt.
 - **Ubuntu:** the GNOME extension reads it from the Files app (Nautilus) and the desktop. On other desktops it uses whatever is on the clipboard after **Ctrl+C**.
 
@@ -140,7 +140,7 @@ One app, three systems. It splits into three layers:
 ```
 
 - **Tauri 2** (Rust plus the system's built-in web view) gives a ~10 MB app instead of Electron's ~150 MB, with tray, transparent always-on-top windows and auto-update on all three systems.
-- The **engine** is a plain Rust library plus a CLI (`ryshift convert photo.heic --to jpg`). It's testable without any UI, and Linux users who can't get the overlay still get every feature.
+- The **engine** is a plain Rust library plus a CLI (`tangerine convert photo.heic --to jpg`). It's testable without any UI, and Linux users who can't get the overlay still get every feature.
 
 ### Spotting "file being dragged + Shift", per system
 This is the only hard, OS-specific part.
@@ -151,7 +151,7 @@ This is the only hard, OS-specific part.
 | **Windows 10/11** | Poll `GetAsyncKeyState` for the left button and Shift; a drag is the button going down on an Explorer window or the desktop and moving past the system drag threshold. The dragged files are that window's selection, read through `IShellWindows` → `IShellBrowser` → `IFolderView` | Topmost window shown with `SW_SHOWNOACTIVATE` (so Explorer keeps the drag); WebView2's drop target receives Explorer's `CF_HDROP` as a copy | ✅ Explorer and desktop drags |
 | **Ubuntu on X11** | One `QueryPointer` request gives the position, button and Shift state; a drag is `XdndSelection` changing hands (or being re-acquired) after the button went down. Its `text/uri-list` gives the files | Always-on-top window at the cursor; WebKitGTK is the XDND drop target | ✅ Full |
 | **Ubuntu on Wayland** (the default since 22.04) | Wayland blocks normal apps from watching global input or placing windows, so a small **GNOME Shell extension** (part of this repo) polls the pointer from inside the Shell (`global.get_pointer()`: position, button, Shift) | The extension calls the app's D-Bus service (`Show`, `Cycle`, `MouseUp`) and moves the app's wheel window to the pointer; the file is then dropped on that window as a normal Wayland drop, and the wheel asks for its slices once the file enters | ✅ via the extension (GNOME 45+) |
-| **Other Linux desktops** (KDE, Sway…) | No overlay at first | Fallbacks: right-click **Open with → Ryshift**, a drop-zone window you can pin, and the CLI | ⚠️ Partial; KDE support is a later add-on |
+| **Other Linux desktops** (KDE, Sway…) | No overlay at first | Fallbacks: right-click **Open with → Tangerine**, a drop-zone window you can pin, and the CLI | ⚠️ Partial; KDE support is a later add-on |
 
 ### Engine: what powers each action
 The same tools are bundled on every system, so results match everywhere.
@@ -203,9 +203,9 @@ Adding a format is one file plus a test. This is the main way outside contributo
 
 ## 4. Repo layout
 ```
-ryshift/
+tangerine/
 ├─ engine/              Rust library: all actions, file-type detection, naming
-├─ cli/                 `ryshift` command line, same actions
+├─ cli/                 `tangerine` command line, same actions
 ├─ app/                 Tauri 2 app: tray, settings, updater
 │  └─ ui/               wheel + panels (plain HTML/CSS/JS, no build step), shared on all OSes
 ├─ watchers/
@@ -233,7 +233,7 @@ ryshift/
 | **M7** | Installers (DMG, MSI, deb, AppImage, Flatpak), Homebrew / winget / Flathub, auto-update, demo video | Launch publicly |
 
 ## 6. Open questions
-- Name: **Ryshift** (placeholder). Alternatives: Dropwheel, Flick, Spindrop.
+- Name: **Tangerine** (placeholder). Alternatives: Dropwheel, Flick, Spindrop.
 - **Signing:** an unsigned app works but shows scary warnings.
   - Mac: notarising needs an Apple Developer account ($99/yr).
   - Windows: a code-signing certificate, or Azure Trusted Signing (~$10/month).

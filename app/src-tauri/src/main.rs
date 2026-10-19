@@ -2,8 +2,8 @@
 
 macro_rules! debug {
     ($($arg:tt)*) => {
-        if std::env::var_os("RYSHIFT_DEBUG").is_some() {
-            eprintln!("[ryshift] {}", format!($($arg)*));
+        if std::env::var_os("TANGERINE_DEBUG").is_some() {
+            eprintln!("[tangerine] {}", format!($($arg)*));
         }
     };
 }
@@ -112,7 +112,7 @@ fn open_panel(app: AppHandle, panel: String, path: String) -> Result<(), String>
     };
     static N: AtomicU32 = AtomicU32::new(0);
     let label = format!("editor-{}", N.fetch_add(1, Ordering::Relaxed));
-    let init = format!("window.__RYSHIFT_EDIT__ = {};", serde_json::json!({ "mode": panel, "path": path }));
+    let init = format!("window.__TANGERINE_EDIT__ = {};", serde_json::json!({ "mode": panel, "path": path }));
     let win = WebviewWindowBuilder::new(&app, label, WebviewUrl::App("editor.html".into()))
         .title(title)
         .inner_size(900.0, 660.0)
@@ -183,10 +183,10 @@ fn tray(app: &tauri::App) -> tauri::Result<()> {
     let hint = MenuItem::with_id(app, "hint", "Drag a file and press Shift", false, None::<&str>)?;
     let label = format!("Or select a file and press {}", SHORTCUT.1);
     let shortcut = MenuItem::with_id(app, "shortcut", label, false, None::<&str>)?;
-    let quit = MenuItem::with_id(app, "quit", "Quit Ryshift", true, Some("CmdOrCtrl+Q"))?;
+    let quit = MenuItem::with_id(app, "quit", "Quit Tangerine", true, Some("CmdOrCtrl+Q"))?;
     let menu = Menu::with_items(app, &[&hint, &shortcut, &PredefinedMenuItem::separator(app)?, &quit])?;
     let mut builder = TrayIconBuilder::with_id("main")
-        .tooltip("Ryshift")
+        .tooltip("Tangerine")
         .menu(&menu)
         .on_menu_event(|app, event| {
             if event.id() == "quit" {
@@ -213,9 +213,9 @@ fn main() {
         )
         .invoke_handler(tauri::generate_handler![actions_for, run_action, hide_wheel, open_panel, load_for_edit, save_edit])
         .setup(|app| {
-            if std::env::var_os("RYSHIFT_PDFIUM").is_none() {
+            if std::env::var_os("TANGERINE_PDFIUM").is_none() {
                 if let Ok(dir) = app.path().resource_dir() {
-                    std::env::set_var("RYSHIFT_PDFIUM", dir.join("lib"));
+                    std::env::set_var("TANGERINE_PDFIUM", dir.join("lib"));
                 }
             }
             #[cfg(target_os = "macos")]
@@ -223,7 +223,7 @@ fn main() {
             tray(app)?;
             let shortcut = Shortcut::new(Some(SHORTCUT.0), Code::Space);
             if let Err(e) = app.global_shortcut().register(shortcut) {
-                eprintln!("Ryshift: couldn't register {}: {e}", SHORTCUT.1);
+                eprintln!("Tangerine: couldn't register {}: {e}", SHORTCUT.1);
             }
             if let Some(win) = app.get_webview_window("wheel") {
                 platform::prepare(&win);
@@ -232,5 +232,5 @@ fn main() {
             Ok(())
         })
         .run(tauri::generate_context!())
-        .expect("error while running Ryshift");
+        .expect("error while running Tangerine");
 }

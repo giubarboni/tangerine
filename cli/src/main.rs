@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-const USAGE: &str = "usage:\n  ryshift list <files…>\n  ryshift run <action> <files…>";
+const USAGE: &str = "usage:\n  tangerine list <files…>\n  tangerine run <action> <files…>";
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -23,7 +23,7 @@ fn main() -> ExitCode {
                     ExitCode::SUCCESS
                 }
                 Err(e) => {
-                    eprintln!("ryshift: {e}");
+                    eprintln!("tangerine: {e}");
                     ExitCode::FAILURE
                 }
             }

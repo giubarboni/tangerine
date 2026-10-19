@@ -6,11 +6,11 @@ import Clutter from 'gi://Clutter';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-const BUS_NAME = 'io.github.alexriderspy.Ryshift';
-const OBJECT_PATH = '/io/github/alexriderspy/Ryshift';
-const INTERFACE = 'io.github.alexriderspy.Ryshift';
+const BUS_NAME = 'app.tangerine.Tangerine';
+const OBJECT_PATH = '/app/tangerine/Tangerine';
+const INTERFACE = 'app.tangerine.Tangerine';
 
-const WHEEL_TITLE = 'Ryshift';
+const WHEEL_TITLE = 'Tangerine';
 const WHEEL_SIZE = 320;
 const DRAG_THRESHOLD = 6;
 const POLL_MS = 16;
@@ -19,7 +19,7 @@ function freshDrag() {
     return {down: false, startX: 0, startY: 0, moved: false, shown: false, shift: false};
 }
 
-export default class RyshiftExtension extends Extension {
+export default class TangerineExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
         this._drag = freshDrag();
@@ -119,7 +119,7 @@ export default class RyshiftExtension extends Extension {
 
     _isWheel(window) {
         return window.get_title() === WHEEL_TITLE &&
-            (window.get_wm_class() ?? '').toLowerCase().includes('ryshift');
+            (window.get_wm_class() ?? '').toLowerCase().includes('tangerine');
     }
 
     _watchWindow(window) {
@@ -159,7 +159,7 @@ export default class RyshiftExtension extends Extension {
                 try {
                     connection.call_finish(result);
                 } catch (e) {
-                    console.warn(`Ryshift: ${method} failed: ${e.message}`);
+                    console.warn(`Tangerine: ${method} failed: ${e.message}`);
                 }
             });
     }
