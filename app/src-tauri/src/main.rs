@@ -14,7 +14,8 @@ mod platform;
 
 use serde::Serialize;
 use std::path::PathBuf;
-use tauri::menu::{Menu, MenuItem, PredefinedMenuItem};
+use tauri::menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem};
+use tauri_plugin_autostart::{MacosLauncher, ManagerExt as _};
 use tauri::tray::TrayIconBuilder;
 use base64::Engine as _;
 use std::sync::atomic::{AtomicU32, Ordering};
@@ -183,15 +184,25 @@ fn tray(app: &tauri::App) -> tauri::Result<()> {
     let hint = MenuItem::with_id(app, "hint", "Drag a file and press Shift", false, None::<&str>)?;
     let label = format!("Or select a file and press {}", SHORTCUT.1);
     let shortcut = MenuItem::with_id(app, "shortcut", label, false, None::<&str>)?;
+    let at_login = app.autolaunch().is_enabled().unwrap_or(false);
+    let login = CheckMenuItem::with_id(app, "login", "Open at login", true, at_login, None::<&str>)?;
     let quit = MenuItem::with_id(app, "quit", "Quit Tangerine", true, Some("CmdOrCtrl+Q"))?;
-    let menu = Menu::with_items(app, &[&hint, &shortcut, &PredefinedMenuItem::separator(app)?, &quit])?;
+    let menu = Menu::with_items(app, &[&hint, &shortcut, &PredefinedMenuItem::separator(app)?, &login, &quit])?;
+    let login_item = login.clone();
     let mut builder = TrayIconBuilder::with_id("main")
         .tooltip("Tangerine")
         .menu(&menu)
-        .on_menu_event(|app, event| {
-            if event.id() == "quit" {
-                app.exit(0);
+        .on_menu_event(move |app, event| match event.id().as_ref() {
+            "quit" => app.exit(0),
+            "login" => {
+                let al = app.autolaunch();
+                let result = if al.is_enabled().unwrap_or(false) { al.disable() } else { al.enable() };
+                if let Err(e) = result {
+                    eprintln!("Tangerine: couldn't change open at login: {e}");
+                }
+                let _ = login_item.set_checked(al.is_enabled().unwrap_or(false));
             }
+            _ => {}
         });
     if let Some(icon) = app.default_window_icon() {
         builder = builder.icon(icon.clone());
@@ -202,6 +213,7 @@ fn tray(app: &tauri::App) -> tauri::Result<()> {
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_autostart::init(MacosLauncher::LaunchAgent, None))
         .plugin(
             tauri_plugin_global_shortcut::Builder::new()
                 .with_handler(|app, _shortcut, event| {
